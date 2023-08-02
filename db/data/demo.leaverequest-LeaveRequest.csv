@@ -1,0 +1,4 @@
+leaveRequestId;leaveRequestDate;leaveRequestReason;leaveRequestComments;linkEmployee_employeeId
+10;07/03/23;Sick Leave;Fever;100
+20;06/12/23;Comp-Off;Weekly Comp-Off;100
+30;05/15/23;Floating Holiday;Festival;120

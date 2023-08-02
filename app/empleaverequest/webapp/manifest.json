@@ -1,0 +1,160 @@
+{
+  "_version": "1.49.0",
+  "sap.app": {
+    "id": "hr.empleaverequest",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.10.3",
+      "toolsId": "870a3b89-36fe-49d7-9318-332b32546df1"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/leave-request/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/metadata.xml",
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.116.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.ushell": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "hr.empleaverequest.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "EmployeePersonalInfoList",
+          "target": "EmployeePersonalInfoList"
+        },
+        {
+          "pattern": "EmployeePersonalInfo({key}):?query:",
+          "name": "EmployeePersonalInfoObjectPage",
+          "target": "EmployeePersonalInfoObjectPage"
+        },
+        {
+          "pattern": "EmployeePersonalInfo({key})/linkLeaveRequest({key2}):?query:",
+          "name": "EmployeeLeaveRequestObjectPage",
+          "target": "EmployeeLeaveRequestObjectPage"
+        }
+      ],
+      "targets": {
+        "EmployeePersonalInfoList": {
+          "type": "Component",
+          "id": "EmployeePersonalInfoList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "entitySet": "EmployeePersonalInfo",
+              "variantManagement": "Page",
+              "navigation": {
+                "EmployeePersonalInfo": {
+                  "detail": {
+                    "route": "EmployeePersonalInfoObjectPage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "EmployeePersonalInfoObjectPage": {
+          "type": "Component",
+          "id": "EmployeePersonalInfoObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "entitySet": "EmployeePersonalInfo",
+              "navigation": {
+                "linkLeaveRequest": {
+                  "detail": {
+                    "route": "EmployeeLeaveRequestObjectPage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "EmployeeLeaveRequestObjectPage": {
+          "type": "Component",
+          "id": "EmployeeLeaveRequestObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "entitySet": "EmployeeLeaveRequest"
+            }
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "leaverequest",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^6",
+    "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@sap/ux-specification": "^1.108.10",
+    "sqlite3": "^5"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-leaverequest": "cds watch --open leaverequest/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-empleaverequest": "cds watch --open empleaverequest/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-leavereq_customapp": "cds watch --open leavereq_customapp/webapp/index.html?sap-ui-xx-viewCache=false"
+  },
+  "sapux": [
+    "app/leaverequest",
+    "app/empleaverequest"
+  ],
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "database": "db.sqlite"
+        }
+      }
+    }
+  }
+}

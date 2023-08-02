@@ -1,0 +1,146 @@
+<mvc:View
+    controllerName="demo.leavereqcustomapp.controller.Object"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+    xmlns:semantic="sap.f.semantic">
+
+    <semantic:SemanticPage
+        id="page"
+        headerPinnable="false"
+        toggleHeaderOnTitleClick="false">
+
+        <semantic:titleHeading>
+            <Title
+                text="{employeeId}"
+                level="H2"/>
+        </semantic:titleHeading>
+
+        <semantic:headerContent>
+            <ObjectNumber
+                unit="{designation}" />
+        </semantic:headerContent>
+
+        <semantic:content>
+        	<VBox class="sapUiSmallMargin">
+        	<f:SimpleForm id="SimpleFormChange354"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			title="Personal Info"
+			labelSpanXL="3"
+			labelSpanL="3"
+			labelSpanM="3"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="4"
+			emptySpanL="4"
+			emptySpanM="4"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false" >
+            <f:toolbar>
+			<Toolbar>
+					<Title text="Personal Info"/>
+					<ToolbarSpacer />
+                        <Label text="Create New Employee" />
+                    	<Switch id="isNew" change="onNewEmployee" customTextOn="Yes" customTextOff="No">
+                            <layoutData>
+                                <FlexItemData growFactor="1" />
+                            </layoutData>
+                        </Switch>
+					<Button icon="sap-icon://save" press="onSaveEmployees"/>				
+				</Toolbar>
+			</f:toolbar>
+			<f:content>
+                <Label text="Employee Id" />
+				<Input id="empId" value="{employeeId}" enabled="false"/>
+				<Label text="Name" />
+				<Input id="employeeName" value="{employeeName}" />
+				<Label text="Designation" />
+				<Input id="designation" value="{designation}"/>				
+				<Label text="Mail Id" />				
+				<Input id="mailId" value="{mailId}" />
+                
+                <Title/>
+				<Label text="Mobile Number" />
+				<Input id="mobileNumber" value="{mobileNumber}"/>	
+                <Label text="Department" />
+				<Select id="department" selectedKey="{department}">
+					<items>
+						<core:Item text="Software development" key="Software development"/>
+						<core:Item text="Business Intelligence" key="Business Intelligence"/>
+						<core:Item text="IT Support" key="IT Support"/>
+					</items>
+				</Select>               
+			</f:content>
+		</f:SimpleForm>
+
+            <Table
+                id="table"
+                width="auto"
+                items="{
+                    path: '/EmployeeLeaveRequest',
+                    sorter: {
+                        path: 'leaveRequestId',
+                        descending: false
+                    }
+                }"
+                noDataText="{worklistView>/tableNoDataText}"              
+                growing="true"
+                growingScrollToLoad="true"
+                updateFinished=".onUpdateFinished">
+
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title
+                            id="tableHeader"
+                            text="{worklistView>/worklistTableTitle}"
+                            level="H3"/>
+                        <ToolbarSpacer />
+                        <SearchField
+                            id="searchField"
+                            tooltip="{i18n>worklistSearchTooltip}"
+                            search=".onSearch">
+                            <layoutData>
+                                <OverflowToolbarLayoutData
+                                    maxWidth="200px"
+                                    priority="NeverOverflow"/>
+                            </layoutData>
+                        </SearchField>
+                    </OverflowToolbar>
+                </headerToolbar>
+
+                <columns>
+                    <Column>
+                        <Text text="{i18n>LeaveDate}" id="LeaveDate"/>
+                    </Column>
+                    <Column hAlign="End">
+                        <Text text="{i18n>LeaveReason}"/>
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem                     
+                        press=".onPress">
+                        <cells>
+                            <ObjectIdentifier
+                                title="{path:'leaveRequestDate',type:'sap.ui.model.type.Date',
+                                        formatOptions: {pattern: 'dd-MM-yyyy'}  }"/>
+                            <ObjectNumber
+                                unit="{leaveRequestReason}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+
+            
+            	</VBox>
+        </semantic:content>
+
+    </semantic:SemanticPage>
+
+</mvc:View>
