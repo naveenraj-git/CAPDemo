@@ -13,7 +13,7 @@
         toggleHeaderOnTitleClick="false">
 
         <semantic:titleHeading>
-            <Title
+            <Title id="employeeTitle"
                 text="{employeeId}"
                 level="H2"/>
         </semantic:titleHeading>
@@ -24,8 +24,8 @@
         </semantic:headerContent>
 
         <semantic:content>
-        	<VBox class="sapUiSmallMargin">
-        	<f:SimpleForm id="SimpleFormChange354"
+        	<VBox>
+        	<f:SimpleForm id="personalInfoForm"
 			editable="true"
 			layout="ResponsiveGridLayout"
 			title="Personal Info"
@@ -80,7 +80,7 @@
 		</f:SimpleForm>
 
             <Table
-                id="table"
+                id="leavereqTable"
                 width="auto"
                 items="{
                     path: '/EmployeeLeaveRequest',
@@ -98,7 +98,7 @@
                     <OverflowToolbar>
                         <Title
                             id="tableHeader"
-                            text="{worklistView>/worklistTableTitle}"
+                            text="Employee ({employeeId}) - Leave Request"
                             level="H3"/>
                         <ToolbarSpacer />
                         <SearchField
@@ -124,21 +124,70 @@
                 </columns>
 
                 <items>
-                    <ColumnListItem                     
-                        press=".onPress">
+                    <ColumnListItem  id="leavereqItems" type="Navigation"                  
+                        press=".onLeaveReqPress">
                         <cells>
                             <ObjectIdentifier
-                                title="{path:'leaveRequestDate',type:'sap.ui.model.type.Date',
-                                        formatOptions: {pattern: 'dd-MM-yyyy'}  }"/>
-                            <ObjectNumber
-                                unit="{leaveRequestReason}" />
+                                title="{path:'leaveRequestDate',type:'sap.ui.model.type.Date', 
+                                        formatOptions: {pattern: 'dd-MM-yyyy', strictParsing: true , UTC: true} }"/>
+                            <ObjectIdentifier
+                                title="{leaveRequestReason}" />
                         </cells>
                     </ColumnListItem>
                 </items>
             </Table>
-
             
-            	</VBox>
+            <f:SimpleForm id="leaveReqForm"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			title="Request Leave"
+			labelSpanXL="3"
+			labelSpanL="3"
+			labelSpanM="3"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="4"
+			emptySpanL="4"
+			emptySpanM="4"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false" >
+            <f:toolbar>
+			<Toolbar>
+					<Title text="Request Leave"/>
+					<ToolbarSpacer />
+                        <!-- <Label text="Create New Employee" /> -->
+                    	<!-- <Switch id="isNew" change="onNewEmployee" customTextOn="Yes" customTextOff="No">
+                            <layoutData>
+                                <FlexItemData growFactor="1" />
+                            </layoutData>
+                        </Switch> -->
+					<Button icon="sap-icon://save" press="onSaveLeaveRequest"/>				
+				</Toolbar>
+			</f:toolbar>
+			<f:content>
+                <Label text="Leave Request Id" />
+				<Input id="leavereqid" value="{leaveRequestId}" enabled="false"/>
+                <Label text="Employee Id" />
+				<Input id="employeeId" value="{linkEmployee_employeeId}" enabled="false"/>
+				<Label text="Request Date" />
+				<DatePicker id="leavereqdate" value="{path:'leaveRequestDate',type:'sap.ui.model.type.Date',
+                                        formatOptions: {pattern: 'dd-MM-yyyy', strictParsing: true , UTC: true} }"/>
+                <Label text="Leave Type" />				
+				<Select id="leavereqreason" selectedKey="{leaveRequestReason}">
+					<items>
+						<core:Item text="Sick Leave" key="Sick Leave"/>
+						<core:Item text="Comp-Off" key="Comp-Off"/>
+						<core:Item text="Floating Holiday" key="Floating Holiday"/>
+					</items>
+				</Select>    
+                <Label text="Comments" />
+                <TextArea id="comments" value="{leaveRequestComments}"></TextArea>           
+			</f:content>
+		</f:SimpleForm>
+        </VBox>
         </semantic:content>
 
     </semantic:SemanticPage>

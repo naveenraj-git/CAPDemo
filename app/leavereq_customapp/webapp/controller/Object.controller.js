@@ -3,8 +3,10 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/routing/History",
     "../model/formatter",
-    "sap/m/MessageToast"
-], function (BaseController, JSONModel, History, formatter, MessageToast) {
+    "sap/m/MessageToast",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], function (BaseController, JSONModel, History, formatter, MessageToast, Filter, FilterOperator) {
     "use strict";
 
     return BaseController.extend("demo.leavereqcustomapp.controller.Object", {
@@ -84,7 +86,33 @@ sap.ui.define([
             }); 
           }
         },
-       
+        onSaveLeaveRequest: function(oEvent)
+        {
+            var referThis = this;
+            var oModel = this.getView().getModel();
+            var empLeaveChanges = {};           
+                       
+            var leavereqid = this.getView().byId("leavereqid").getValue();
+            var empId = this.getView().byId("employeeId").getValue();
+            var leavereqdate = this.getView().byId("leavereqdate").getValue();         
+            var leavereqreason = this.getView().byId("leavereqreason").getSelectedKey();
+            var comments = this.getView().byId("comments").getValue();         
+           
+            empLeaveChanges.leaveRequestId = leavereqid;
+            empLeaveChanges.linkEmployee_employeeId = empId;
+            empLeaveChanges.leaveRequestDate = new Date(leavereqdate);
+            empLeaveChanges.leaveRequestReason = leavereqreason;
+            empLeaveChanges.leaveRequestComments = comments;    
+            
+            oModel.update("/EmployeeLeaveRequest('"+empLeaveChanges.leaveRequestId+"')", empLeaveChanges, {                
+                success: function (data,response) {                                         
+                    MessageToast.show("Leave Request Changed");   
+                    referThis.bindLeaveRequestTable();               
+                },
+                error: function (oError) {                  
+                }
+            }); 
+        },
 
         /**
          * Event handler  for navigating back.
@@ -116,6 +144,29 @@ sap.ui.define([
             this.getView().byId("isNew").setState(false);
             var sObjectId =  oEvent.getParameter("arguments").objectId;
             this._bindView("/EmployeePersonalInfo" + sObjectId);
+            this.bindLeaveRequestTable();
+        },
+
+        bindLeaveRequestTable: function()
+        {
+            var leavereqTable = this.getView().byId("leavereqTable");
+            var leavereqItems = this.getView().byId("leavereqItems").clone();
+            var employeeId = this.getView().byId("employeeTitle").getText();
+            var empId = [new Filter("linkEmployee_employeeId", FilterOperator.EQ, employeeId)];
+            leavereqTable.bindAggregation("items",{path:"/EmployeeLeaveRequest",template:leavereqItems, 
+            filters:empId});
+        },
+        onLeaveReqPress: function(oEvent)
+        {
+            //var sObjectId =  oEvent.getParameter("arguments").objectId;
+            var sObjectPath = oEvent.getSource().getBindingContext().sPath;
+
+            this.getView().byId("leaveReqForm").bindElement({
+                path: sObjectPath,
+                events: {
+                    change: this._onBindingChange.bind(this)                   
+                }
+            });
         },
 
         /**
