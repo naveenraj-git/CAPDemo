@@ -1,26 +1,51 @@
 const cds = require('@sap/cds');
+const {LeaveRequest,PersonalInfo} = cds.entities('demo.leaverequest');
 
 module.exports = cds.service.impl(async function() {  
     
     this.before('CREATE','EmployeePersonalInfo', validateEmployeeCreate);
 
+    this.on('READ','EmployeePersonalInfo', readEmployees); 
+
     this.on('UPDATE','EmployeePersonalInfo', validateEmployeeChanges); 
+
+    this.before('DELETE','EmployeePersonalInfo', validateEmployeeDelete); 
 });
 
+const readEmployees = async (req,next) =>
+{
+    var entity = next();
+    return entity;
+}
+const validateEmployeeDelete = async (req) => 
+{
+    var empId = req.data.employeeId;
+    var leaveRequestList = await SELECT.from(LeaveRequest).where({linkEmployee_employeeId:empId});
+    console.log("Emp Leave req.", leaveRequestList);
+    
+    if(leaveRequestList.length>0)
+    {
+        return req.reject({code:"400",message:"Employee has Leave Request Pending, Cannot be deleted"});
+    }
+    else
+    req.info({code:"200", message: "Employee Deleted"}); 
+}
 const validateEmployeeCreate = async (req) => 
 {
     if(req.data.employeeId.length>5)
-    return req.reject({code:"500", message: "Invalid Employee Id, Cannot be more than 5 chars"}); 
+    req.error({code:"400", message: "Invalid Employee Id, Cannot be more than 5 chars"}); 
     else
-    return req.info({code:"200", message: "New Employee Created"}); 
+    req.info({code:"200", message: "New Employee Created"}); 
 }
 const validateEmployeeChanges = async (req) => 
 {
     console.log("Request data from UI:",req.data);
-    if(req.data.employeeName==="")
-    return req.reject({code:"500", message: "Employee Name cannot be Empty"}); 
+    if(req.data.employeeName==="")    
+    {
+     return req.error(400,"Employee Name cannot be Empty");         
+    }
     else
-    return req.info({code:"200", message: "Employee Changes Saved"}); 
+     req.info("Employee Changes Saved"); 
 }
 
 

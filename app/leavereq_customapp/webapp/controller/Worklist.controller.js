@@ -34,6 +34,8 @@ sap.ui.define([
             });
             this.setModel(oViewModel, "worklistView");
 
+            
+
         },
 
         /* =========================================================== */
@@ -62,6 +64,8 @@ sap.ui.define([
                 sTitle = this.getResourceBundle().getText("worklistTableTitle");
             }
             this.getModel("worklistView").setProperty("/worklistTableTitle", sTitle);
+
+           
         },
 
         /**

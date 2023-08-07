@@ -52,7 +52,8 @@
                                 <FlexItemData growFactor="1" />
                             </layoutData>
                         </Switch>
-					<Button icon="sap-icon://save" press="onSaveEmployees"/>				
+					<Button icon="sap-icon://save" press="onSaveEmployees"/>		
+                    <Button icon="sap-icon://delete" press="onDeleteEmployee"/>				
 				</Toolbar>
 			</f:toolbar>
 			<f:content>

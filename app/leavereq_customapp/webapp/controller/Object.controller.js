@@ -1,3 +1,4 @@
+var referThis;
 sap.ui.define([
     "./BaseController",
     "sap/ui/model/json/JSONModel",
@@ -5,8 +6,9 @@ sap.ui.define([
     "../model/formatter",
     "sap/m/MessageToast",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
-], function (BaseController, JSONModel, History, formatter, MessageToast, Filter, FilterOperator) {
+    "sap/ui/model/FilterOperator",
+    "sap/m/MessageBox"
+], function (BaseController, JSONModel, History, formatter, MessageToast, Filter, FilterOperator, MessageBox) {
     "use strict";
 
     return BaseController.extend("demo.leavereqcustomapp.controller.Object", {
@@ -22,12 +24,18 @@ sap.ui.define([
          * @public
          */
         onInit : function () {
+            referThis = this;
             // Model used to manipulate control states. The chosen values make sure,
             // detail page shows busy indication immediately so there is no break in
             // between the busy indication for loading the view's meta data
+
+            var oViewModel = new JSONModel({
+                busy : true,
+                delay : 0
+            });
           
             this.getRouter().getRoute("object").attachPatternMatched(this._onObjectMatched, this);
-            //this.setModel(oViewModel, "objectView");
+            this.setModel(oViewModel, "objectView");
         },
         onNewEmployee: function(oEvent)
         {
@@ -44,9 +52,29 @@ sap.ui.define([
             else
             this.getView().byId("empId").setEnabled(false);
         },
+        onDeleteEmployee: function(oEvent)
+        {
+            var oModel = this.getView().getModel();
+            oModel.setUseBatch(false);
+            var empId = this.getView().byId("empId").getValue();
+
+            oModel.remove("/EmployeePersonalInfo('"+empId+"')", {               
+                success: function(data) {                  
+                    MessageBox.information("Employee Deleted", {
+                        actions: [MessageBox.Action.CLOSE],                      
+                        onClose: function (sAction) {
+                            referThis.onNavBack();
+                        }
+                    });
+                },
+                error: function(oError) {                      
+                }
+            });
+        },
         onSaveEmployees: function(oEvent)
         {
             var oModel = this.getView().getModel();
+            oModel.setUseBatch(false);
             var empChanges = {};           
                        
             var empId = this.getView().byId("empId").getValue();
@@ -88,8 +116,9 @@ sap.ui.define([
         },
         onSaveLeaveRequest: function(oEvent)
         {
-            var referThis = this;
+           
             var oModel = this.getView().getModel();
+            oModel.setUseBatch(false);
             var empLeaveChanges = {};           
                        
             var leavereqid = this.getView().byId("leavereqid").getValue();
@@ -176,17 +205,17 @@ sap.ui.define([
          * @private
          */
         _bindView : function (sObjectPath) {
-            //var oViewModel = this.getModel("objectView");
+            var oViewModel = this.getModel("objectView");
 
             this.getView().bindElement({
                 path: sObjectPath,
                 events: {
                     change: this._onBindingChange.bind(this),
                     dataRequested: function () {
-                      //  oViewModel.setProperty("/busy", true);
+                        oViewModel.setProperty("/busy", true);
                     },
                     dataReceived: function () {
-                      //  oViewModel.setProperty("/busy", false);
+                      oViewModel.setProperty("/busy", false);
                     }
                 }
             });
