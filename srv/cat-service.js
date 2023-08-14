@@ -13,16 +13,11 @@ module.exports = cds.service.impl(async function() {
     this.before('DELETE','EmployeePersonalInfo', validateEmployeeDelete); 
 
     const { Background_Awards } = this.entities;
-    const service = await cds.connect.to('ECEmployeeProfile');
+    const service = await cds.connect.to('sf');
 
-
-    this.on('READ', Background_Awards, request => {
-        return service.tx(request).run(request.query);
-    });
-
-    const { Background_Compensation } = this.entities;
+    const { Position } = this.entities;
   
-    this.on('READ', Background_Compensation, request => {
+    this.on('READ', Position, request => {
         return service.tx(request).run(request.query);
     });
 

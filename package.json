@@ -42,6 +42,15 @@
           "username": "SravyasriV@SFPART050640",
           "password": "Pragati@98"
         }
+      },
+      "sf": {
+        "kind": "odata-v2",
+        "model": "srv/external/sf",
+        "credentials": {
+          "url": "https://apisalesdemo8.successfactors.com/odata/v2/",
+          "username": "SravyasriV@SFPART050640",
+          "password": "Pragati@98"
+        }
       }
     }
   }

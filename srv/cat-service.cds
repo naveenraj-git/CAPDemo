@@ -1,5 +1,5 @@
 using demo.leaverequest as demo from '../db/data-model';
-using {ECEmployeeProfile as external} from './external/ECEmployeeProfile.csn';
+using {sf as external} from './external/sf.csn';
 
 service LeaveRequestService {
         
@@ -12,5 +12,7 @@ service LeaveRequestService {
     entity Background_Awards as projection on external.Background_Awards;
 
     entity Background_Compensation as projection on external.Background_Compensation;
+
+    entity Position as projection on external.Position;
     
 }
