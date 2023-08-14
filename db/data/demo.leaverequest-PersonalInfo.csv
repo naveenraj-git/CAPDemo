@@ -2,3 +2,4 @@ employeeId;employeeName;designation;mailId;mobileNumber;department
 100;James;Solutions Architect;james@xyz.com;(541) 754-3010;Software development
 120;George;Data analyst;george@xyz.com;(541) 655-8900;Business Intelligence
 155;Thomas;Web developer;thomas@xyz.com;(541) 722-8642;Software development
+199;Ricky;Tester;ricky@xyz.com;(341) 122-2242;Software development

@@ -18,3 +18,9 @@ entity LeaveRequest
       leaveRequestComments  : String(100);
       linkEmployee          : Association to PersonalInfo;
 }
+
+entity ChangeLog{
+ key empChangeLogId: UUID;
+     employeeId: String(10);
+     changeDate: Date;      
+}

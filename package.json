@@ -6,9 +6,11 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "@sap-cloud-sdk/http-client": "^3.4.0",
     "@sap/cds": "^6",
     "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
-    "express": "^4"
+    "express": "^4",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@sap/ux-specification": "^1.108.10",
@@ -30,6 +32,15 @@
         "kind": "sqlite",
         "credentials": {
           "database": "db.sqlite"
+        }
+      },
+      "ECEmployeeProfile": {
+        "kind": "odata-v2",
+        "model": "srv/external/ECEmployeeProfile",
+        "credentials": {
+          "url": "https://apisalesdemo8.successfactors.com/odata/v2/",
+          "username": "SravyasriV@SFPART050640",
+          "password": "Pragati@98"
         }
       }
     }

@@ -1,5 +1,6 @@
 const cds = require('@sap/cds');
-const {LeaveRequest,PersonalInfo} = cds.entities('demo.leaverequest');
+const crypto = require("crypto");
+const {LeaveRequest,ChangeLog} = cds.entities('demo.leaverequest');
 
 module.exports = cds.service.impl(async function() {  
     
@@ -10,6 +11,21 @@ module.exports = cds.service.impl(async function() {
     this.on('UPDATE','EmployeePersonalInfo', validateEmployeeChanges); 
 
     this.before('DELETE','EmployeePersonalInfo', validateEmployeeDelete); 
+
+    const { Background_Awards } = this.entities;
+    const service = await cds.connect.to('ECEmployeeProfile');
+
+
+    this.on('READ', Background_Awards, request => {
+        return service.tx(request).run(request.query);
+    });
+
+    const { Background_Compensation } = this.entities;
+  
+    this.on('READ', Background_Compensation, request => {
+        return service.tx(request).run(request.query);
+    });
+
 });
 
 const readEmployees = async (req,next) =>
@@ -22,13 +38,20 @@ const validateEmployeeDelete = async (req) =>
     var empId = req.data.employeeId;
     var leaveRequestList = await SELECT.from(LeaveRequest).where({linkEmployee_employeeId:empId});
     console.log("Emp Leave req.", leaveRequestList);
-    
+
     if(leaveRequestList.length>0)
     {
         return req.reject({code:"400",message:"Employee has Leave Request Pending, Cannot be deleted"});
     }
     else
-    req.info({code:"200", message: "Employee Deleted"}); 
+    { 
+        const uuid = crypto.randomUUID();
+        var insertedRecords = await INSERT.into(ChangeLog).values(uuid, empId, new Date());
+        console.log("insertedRecords",insertedRecords);
+
+        req.info({code:"200", message: "Employee Deleted"}); 
+    }
+    
 }
 const validateEmployeeCreate = async (req) => 
 {

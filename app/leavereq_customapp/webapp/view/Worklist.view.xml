@@ -16,6 +16,7 @@
         </semantic:titleHeading>
 
         <semantic:content>
+        <VBox>
             <Table
                 id="table"
                 width="auto"
@@ -73,12 +74,48 @@
                     </ColumnListItem>
                 </items>
             </Table>
+
+                <!-- <Table               
+                width="auto"
+                items="{
+                    path: '/EmployeeChangeLog',
+                    sorter: {
+                        path: 'employeeId',
+                        descending: false
+                    }
+                }">
+
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title                        
+                            text="Change Log"
+                            level="H3"/>
+                        <ToolbarSpacer />                       
+                    </OverflowToolbar>
+                </headerToolbar>
+
+                <columns>
+                    <Column >
+                        <Text text="Employee" />
+                    </Column>
+                    <Column hAlign="End">
+                        <Text text="Date/Time" />
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <ObjectIdentifier
+                                title="{employeeId}"/>
+                           <ObjectIdentifier
+                                title="{/changeDate}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table> -->
+        </VBox>
         </semantic:content>
-
-        <semantic:sendEmailAction>
-            <semantic:SendEmailAction id="shareEmail" press=".onShareEmailPress"/>
-        </semantic:sendEmailAction>
-
     </semantic:SemanticPage>
 
 </mvc:View>
