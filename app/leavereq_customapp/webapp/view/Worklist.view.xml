@@ -75,14 +75,12 @@
                 </items>
             </Table>
 
-                <!-- <Table               
+               
+
+			<Table               
                 width="auto"
                 items="{
-                    path: '/EmployeeChangeLog',
-                    sorter: {
-                        path: 'employeeId',
-                        descending: false
-                    }
+                    path: '/EmployeeChangeLog'
                 }">
 
                 <headerToolbar>
@@ -108,14 +106,14 @@
                         <cells>
                             <ObjectIdentifier
                                 title="{employeeId}"/>
-                           <ObjectIdentifier
-                                title="{/changeDate}" />
+                           <!-- <ObjectIdentifier
+                                title="{changeDate}" /> -->
                         </cells>
                     </ColumnListItem>
                 </items>
-            </Table> -->
+            </Table>
         </VBox>
         </semantic:content>
     </semantic:SemanticPage>
 
-</mvc:View>
+</mvc:View> 

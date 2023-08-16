@@ -174,6 +174,7 @@ sap.ui.define([
             var sObjectId =  oEvent.getParameter("arguments").objectId;
             this._bindView("/EmployeePersonalInfo" + sObjectId);
             this.bindLeaveRequestTable();
+            this.bindPostionTable();
         },
 
         bindLeaveRequestTable: function()
@@ -183,6 +184,16 @@ sap.ui.define([
             var employeeId = this.getView().byId("employeeTitle").getText();
             var empId = [new Filter("linkEmployee_employeeId", FilterOperator.EQ, employeeId)];
             leavereqTable.bindAggregation("items",{path:"/EmployeeLeaveRequest",template:leavereqItems, 
+            filters:empId});
+        },
+        bindPostionTable: function()
+        {
+            var positionTable = this.getView().byId("positionTable");
+            if(!this.positionItems)
+            this.positionItems = this.getView().byId("positionItems").clone();
+            var employeeId = this.getView().byId("employeeTitle").getText();
+            var empId = [new Filter("code", FilterOperator.EQ, employeeId)];
+            positionTable.bindAggregation("items",{path:"/Position",template:this.positionItems, 
             filters:empId});
         },
         onLeaveReqPress: function(oEvent)

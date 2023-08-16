@@ -10,18 +10,21 @@ module.exports = cds.service.impl(async function() {
 
     this.on('UPDATE','EmployeePersonalInfo', validateEmployeeChanges); 
 
-    this.before('DELETE','EmployeePersonalInfo', validateEmployeeDelete); 
-
-    const { Background_Awards } = this.entities;
-    const service = await cds.connect.to('sf');
-
-    const { Position } = this.entities;
-  
-    this.on('READ', Position, request => {
-        return service.tx(request).run(request.query);
-    });
-
+    this.before('DELETE','EmployeePersonalInfo', validateEmployeeDelete);    
+   
+    this.on('READ', 'Position', readPostions);
 });
+
+const readPostions = async (req,next) =>
+{
+     const service = await cds.connect.to('sf');
+    // var positionData = await service.run(req.query);   
+    // return positionData;
+      
+    const {Position} = service.entities;
+    var positionData = await service.run(SELECT.from(Position).where({ code: "201" })); 
+    return positionData;
+}
 
 const readEmployees = async (req,next) =>
 {
